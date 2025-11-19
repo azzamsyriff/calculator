@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kalkulator Modern</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#6366f1',
+            primaryHover: '#4f46e5',
+            darkBg: '#111827',
+            darkCard: '#1f2937',
+            lightBg: '#f9fafb',
+            lightCard: '#ffffff',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .btn:active {
+      transform: scale(0.96);
+      transition: transform 0.1s;
+    }
+    .no-select {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+  </style>
+</head>
+
+<body class="bg-lightBg dark:bg-darkBg text-gray-900 dark:text-gray-100 min-h-screen flex items-center justify-center p-4 transition-colors duration-300">
+  <div class="w-full max-w-md">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold text-primary">Kalkulator</h1>
+      <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="bg-lightCard dark:bg-darkCard rounded-2xl shadow-xl overflow-hidden transition-colors duration-300">
+      <div class="p-5 text-right">
+        <div id="previous-operand" class="text-gray-500 dark:text-gray-400 text-lg h-6 overflow-x-auto whitespace-nowrap no-select"></div>
+        <div id="current-operand" class="text-3xl font-bold mt-1 h-12 overflow-x-auto whitespace-nowrap no-select">0</div>
+      </div>
+
+      <div class="grid grid-cols-4 gap-3 p-5">
+        <!-- Baris 1: AC, DEL, %, ÷ -->
+        <button class="btn col-span-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-xl h-16 text-xl">AC</button>
+        <button class="btn col-span-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-xl h-16 text-xl">DEL</button>
+        <button class="btn col-span-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-xl h-16 text-xl">%</button>
+        <button class="btn col-span-1 bg-primary hover:bg-primaryHover text-white font-medium rounded-xl h-16 text-xl">÷</button>
+
+        <!-- Baris 2: 7, 8, 9, × -->
+        <button class="btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-xl h-16 text-xl">7</button>
+        <button class="btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-xl h-16 text-xl">8</button>
+        <button class="btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-xl h-16 text-xl">9</button>
+        <button class="btn bg-primary hover:bg-primaryHover text-white font-medium rounded-xl h-16 text-xl">×</button>
+
+        <!-- Baris 3: 4, 5, 6, − -->
+        <button class="btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-xl h-16 text-xl">4</button>
+        <button class="btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-xl h-16 text-xl">5</button>
+        <button class="btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-xl h-16 text-xl">6</button>
+        <button class="btn bg-primary hover:bg-primaryHover text-white font-medium rounded-xl h-16 text-xl">−</button>
+
+        <!-- Baris 4: 1, 2, 3, + -->
+        <button class="btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-xl h-16 text-xl">1</button>
+        <button class="btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-xl h-16 text-xl">2</button>
+        <button class="btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-xl h-16 text-xl">3</button>
+        <button class="btn bg-primary hover:bg-primaryHover text-white font-medium rounded-xl h-16 text-xl">+</button>
+
+        <!-- Baris 5: 0, ., = -->
+        <button class="btn col-span-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-xl h-16 text-xl">0</button>
+        <button class="btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-xl h-16 text-xl">.</button>
+        <button class="btn bg-primary hover:bg-primaryHover text-white font-medium rounded-xl h-16 text-xl">=</button>
+      </div>
+    </div>
+
+    <p class="text-center text-gray-500 dark:text-gray-400 mt-6 text-sm">Tugas Sekolah • Kalkulator Modern</p>
+  </div>
+
+  <script>
+    const currentOperandTextElement = document.getElementById('current-operand');
+    const previousOperandTextElement = document.getElementById('previous-operand');
+    const buttons = document.querySelectorAll('.btn');
+    const themeToggle = document.getElementById('theme-toggle');
+
+    let currentOperand = '0';
+    let previousOperand = '';
+    let operation = undefined;
+    let shouldResetScreen = false;
+
+    // Theme
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+    themeToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    function updateDisplay() {
+      currentOperandTextElement.innerText = currentOperand;
+      if (operation != null) {
+        previousOperandTextElement.innerText = `${previousOperand} ${getOperationSymbol(operation)}`;
+      } else {
+        previousOperandTextElement.innerText = previousOperand;
+      }
+    }
+
+    function getOperationSymbol(op) {
+      return { '+': '+', '-': '−', '*': '×', '/': '÷' }[op] || op;
+    }
+
+    function appendNumber(number) {
+      if (currentOperand === '0' || shouldResetScreen) {
+        currentOperand = number;
+        shouldResetScreen = false;
+      } else {
+        if (number === '.' && currentOperand.includes('.')) return;
+        currentOperand += number;
+      }
+    }
+
+    function chooseOperation(op) {
+      if (currentOperand === '') return;
+      if (previousOperand !== '') {
+        calculate();
+      }
+      operation = op;
+      previousOperand = currentOperand;
+      shouldResetScreen = true;
+    }
+
+    function calculate() {
+      let computation;
+      const prev = parseFloat(previousOperand);
+      const current = parseFloat(currentOperand);
+      if (isNaN(prev) || isNaN(current)) return;
+
+      switch (operation) {
+        case '+': computation = prev + current; break;
+        case '-': computation = prev - current; break;
+        case '*': computation = prev * current; break;
+        case '/':
+          if (current === 0) {
+            alert('Error: Pembagian dengan nol!');
+            clear();
+            return;
+          }
+          computation = prev / current;
+          break;
+        default: return;
+      }
+
+      currentOperand = computation.toString();
+      operation = undefined;
+      previousOperand = '';
+      shouldResetScreen = true;
+    }
+
+    function clear() {
+      currentOperand = '0';
+      previousOperand = '';
+      operation = undefined;
+    }
+
+    function deleteNumber() {
+      if (currentOperand.length === 1 || (currentOperand.length === 2 && currentOperand.startsWith('-'))) {
+        currentOperand = '0';
+      } else {
+        currentOperand = currentOperand.slice(0, -1);
+      }
+    }
+
+    // Fungsi persen
+    function handlePercentage() {
+      const current = parseFloat(currentOperand);
+      if (isNaN(current)) return;
+
+      if (operation === undefined) {
+        currentOperand = (current / 100).toString();
+      } else if (previousOperand !== '') {
+        const prev = parseFloat(previousOperand);
+        if (isNaN(prev)) return;
+        const percentageValue = (prev * current) / 100;
+        currentOperand = percentageValue.toString();
+        operation = undefined;
+        previousOperand = '';
+      }
+    }
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const value = button.innerText;
+
+        if (value >= '0' && value <= '9') {
+          appendNumber(value);
+        } else if (value === '.') {
+          appendNumber('.');
+        } else if (value === 'AC') {
+          clear();
+        } else if (value === 'DEL') {
+          deleteNumber();
+        } else if (value === '%') {
+          handlePercentage();
+        } else if (value === '÷') {
+          chooseOperation('/');
+        } else if (value === '×') {
+          chooseOperation('*');
+        } else if (value === '−') {
+          chooseOperation('-');
+        } else if (value === '+') {
+          chooseOperation('+');
+        } else if (value === '=') {
+          calculate();
+        }
+
+        updateDisplay();
+      });
+    });
+
+    updateDisplay();
+  </script>
+</body>
+</html>
